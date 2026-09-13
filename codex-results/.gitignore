@@ -1,0 +1,7 @@
+.venv/
+.agents/
+tmp/
+output/
+*.aux
+*.log
+*.out
