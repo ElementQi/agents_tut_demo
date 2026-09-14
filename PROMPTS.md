@@ -1,8 +1,9 @@
 # Prompt-only demos
 
-Both demonstrations start from an **empty folder**. There are no fixtures to copy:
-the prompt sequence is the lesson, and the agent builds everything. This makes the
-demos trivial to hand on — students copy the prompts and run them at their own pace.
+The ML and report demos start from an **empty folder**. There are no fixtures to
+copy: the prompt sequence is the lesson, and the agent builds everything. This
+makes the demos trivial to hand on — students copy the prompts and run them at their
+own pace. Step 1 navigates a cloned public repository instead.
 
 Prerequisites on the student machine: Python 3.13, Node.js LTS, OpenCode, Codex CLI
 (for Demo B), and — for the PDF step — a LaTeX distribution plus Poppler. Internet
@@ -27,6 +28,31 @@ installation into an agent task instead of a prerequisite.
 Expected evidence: a short report of versions and paths; the agent then installs
 what is missing (it may ask for permission, or for a package manager such as
 Homebrew, Chocolatey, or apt). Nothing else to prepare by hand.
+
+---
+
+## Step 1 — Repository navigation: find the system prompt
+
+Clone a large real repository and treat it as unfamiliar code. This demonstrates
+repository navigation on a 15k-commit codebase.
+
+```sh
+git clone --depth 1 https://github.com/anomalyco/opencode.git
+cd opencode
+opencode
+```
+
+> In this repository, find where OpenCode defines the system prompt it sends to the
+> model. Which file(s) hold the prompt text, how is the prompt chosen for a given
+> model, and for a trivial chat message what exactly is sent to the provider --- the
+> system prompt, the tool definitions, and my message? Cite the file paths.
+
+Expected evidence: the agent locates `packages/opencode/src/session/prompt/*.txt`
+(for example `gpt-astra.txt`, `gpt.txt`, `anthropic.txt`, `default.txt`), finds the
+selection logic in `packages/opencode/src/session/system.ts` (GPT-6 selects
+`gpt-astra.txt`, Claude selects `anthropic.txt`, otherwise `default.txt`), and notes
+that the request is assembled in `packages/opencode/src/session/prompt.ts` and
+`session/llm/request.ts`, with your message appended as a user turn.
 
 ---
 
@@ -132,6 +158,6 @@ and that image is inspected.
 
 ## Reset
 
-Both demos are throwaway. To run again, delete the two working folders (or use new
-names) and start from `opencode` / `codex` in an empty directory. Nothing in this
-repository needs to be copied in.
+Everything is throwaway. To run again, delete the cloned `opencode/` and the two
+working folders (or use new names) and start over. Nothing in this repository needs
+to be copied in.
