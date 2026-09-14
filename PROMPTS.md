@@ -62,26 +62,40 @@ that the request is assembled in `packages/opencode/src/session/prompt.ts` and
 ## Demo A — OpenCode: build and supervise a small ML experiment
 
 Create an empty folder and start OpenCode there (`opencode`). Submit the prompts
-in order; do not paste them all at once.
+in order; do not paste them all at once. The library, exact data generation, split,
+models, metric, and filenames are pinned so the numbers are reproducible live.
 
 **A1 — plan first (no files yet).**
 > We are going to build a small machine-learning experiment from scratch in this
-> empty folder. First propose a short plan: the files you will create, the data,
-> the model, and how we will check the result. Do not create anything yet.
+> empty folder. The deliverables will be `experiment.py`, `metrics.json`, and a
+> residual plot, using NumPy for the math and Matplotlib for plots only (no
+> scikit-learn, no regularization). Propose a short plan first: the files, the data,
+> the models, and how we check the result. Do not create anything yet.
 
 Expected evidence: a short plan and file list. This is the read-only planning step.
 
 **A2 — build and run.**
-> Go ahead and build it. Create a project-local Python environment, then write and
-> run a script that generates a 1-D regression dataset and compares two models.
-> Data: x is 40 points evenly spaced in [-1, 1]; y = 2x + 1 plus Gaussian noise with
-> standard deviation 0.3; use seed 42 for the noise and a second seed-42 permutation
-> to split 20 training and 20 held-out points. Fit (a) a mean baseline and (b) a
-> linear model on the training points, report mean squared error on the held-out
-> points for each, and save the numbers to metrics.json.
+> Go ahead and build it. Create a project-local Python environment, then write
+> `experiment.py` using only NumPy and Matplotlib. Generate the data exactly like
+> this:
+>
+> ```python
+> rng = np.random.default_rng(42)
+> x = np.linspace(-1, 1, 40)
+> y = 2*x + 1 + rng.normal(0, 0.3, 40)
+> order = rng.permutation(40)
+> train, test = order[:20], order[20:]
+> ```
+>
+> Fit two models on the training rows only: (a) a mean baseline that predicts the
+> training-target mean, and (b) a linear model by ordinary least squares
+> (`np.polyfit(x[train], y[train], 1)`). Report mean squared error for each on the
+> training and held-out rows, print them to four decimals, and save `metrics.json`
+> with keys `mean` and `linear`, each holding `train_mse` and `test_mse`.
 
-Expected evidence: environment creation, the script, a run printing two held-out
-MSE values, and `metrics.json`. Reference: baseline 1.7700, linear 0.1035.
+Expected evidence: environment creation, `experiment.py`, a run printing four
+numbers, and `metrics.json`. Reference: mean 1.2922 / 1.7700, linear 0.0289 / 0.1035
+(train / held-out).
 
 **A3 — introduce the validity question (do not keep this change).**
 > Now try a variant: fit the linear model on all 40 points but still report the
@@ -92,19 +106,23 @@ Expected evidence: the agent states that the fit now sees held-out rows, so the
 reported error is no longer a clean held-out estimate (leakage).
 
 **A4 — revert, guard with a test, plot.**
-> Revert to fitting on the 20 training points only. Add a test that would fail if
-> the fit ever used held-out rows, and add a residual plot. Rerun everything and
-> show the test result.
+> Revert to fitting on the 20 training points only. Add a test that asserts the
+> model is fitted on training rows only and that the reported held-out MSE equals a
+> train-only recomputation; add a residual plot saved as `residuals.png`. Rerun
+> everything and show the test result.
 
-Expected evidence: a diff back to the train-only fit, a passing test, and a plotted
-figure.
+Expected evidence: a diff back to the train-only fit, a passing test, and
+`residuals.png`.
 
 **A5 — a flexible model.**
-> Now also fit a degree-9 polynomial on the training points. Compare its held-out
-> error with the linear model. Which generalizes better, and why?
+> Add a third model to `experiment.py`: a degree-9 polynomial fitted with
+> `np.polyfit(x[train], y[train], 9)`. Report its training and held-out MSE in the
+> same four-decimal format, add it to `metrics.json` under the key `poly9`, and tell
+> me which model generalizes best and why.
 
 Expected evidence: a comparison; the polynomial has lower training error but higher
-held-out error. Reference: linear held-out 0.1035 vs polynomial held-out 0.1429.
+held-out error. Reference: linear training/held-out 0.0289 / 0.1035; polynomial
+0.0223 / 0.1429.
 
 **A6 — reuse a skill.**
 > Install the matplotlib skill from k-dense-ai/scientific-agent-skills, then use it
