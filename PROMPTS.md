@@ -5,9 +5,10 @@ copy: the prompt sequence is the lesson, and the agent builds everything. This
 makes the demos trivial to hand on — students copy the prompts and run them at their
 own pace. Step 1 navigates a cloned public repository instead.
 
-Prerequisites on the student machine: Python 3.13, Node.js LTS, OpenCode, Codex CLI
-(for Demo B), and — for the PDF step — a LaTeX distribution plus Poppler. Internet
-access is needed for the first `pip` install and for installing skills.
+Prerequisites on the student machine: Python 3.13, Node.js LTS, git, OpenCode,
+Codex CLI (for Demo B), and — for the report step — a LaTeX distribution plus
+Poppler. Internet access is needed for the first `pip` install, for cloning the
+navigation repository, and for installing skills.
 
 The reference numbers below come from an author-written implementation of the same
 prompts (`demo/reference-experiment/`); the live agent's files and wording may
@@ -20,14 +21,16 @@ differ, but a seed-42 run should land on the same values.
 Run this once in each empty project folder before the demo prompts. It turns tool
 installation into an agent task instead of a prerequisite.
 
-> Before we start, check this machine and report what you find: the Python version,
-> whether conda is available, and whether a LaTeX compiler (pdflatex from MiKTeX,
-> TeX Live, or MacTeX) and Poppler (pdftoppm) are installed. If anything is missing,
-> install it for me and tell me exactly what you installed.
+> Before we start, check this machine and report what you find: the Python version
+> and pip, whether conda is available, git, Node.js and npm, a LaTeX compiler
+> (pdflatex from MiKTeX, TeX Live, or MacTeX), and Poppler (pdftoppm). If anything
+> is missing, install it for me and tell me exactly what you installed.
 
 Expected evidence: a short report of versions and paths; the agent then installs
 what is missing (it may ask for permission, or for a package manager such as
-Homebrew, Chocolatey, or apt). Nothing else to prepare by hand.
+Homebrew, Chocolatey, apt, or winget). git is needed to clone the repository we
+navigate and to power undo; Python, Node.js, LaTeX, and Poppler are used by the ML,
+report, and PDF steps. Nothing else to prepare by hand.
 
 ---
 
