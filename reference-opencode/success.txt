@@ -1,4 +1,0 @@
-Train: 30 | Test: 10
-Fitted line: y = 2.0125 x + 1.0104
-Mean predictor test MSE: 1.5476
-Fitted line test MSE:    0.0133

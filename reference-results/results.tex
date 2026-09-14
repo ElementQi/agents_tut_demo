@@ -1,48 +1,52 @@
-\documentclass[11pt]{article}
-\usepackage[a4paper,margin=25mm]{geometry}
+\documentclass[10pt]{article}
+\usepackage[a4paper,margin=22mm]{geometry}
 \usepackage[T1]{fontenc}
-\usepackage{lmodern,booktabs,multirow,xcolor}
-\definecolor{navy}{HTML}{172B43}
+\usepackage{lmodern,booktabs}
+\usepackage{titlesec}
+\titlespacing*{\section}{0pt}{2.2ex}{0.8ex}
 \pagestyle{empty}
+\setlength{\parskip}{0.5ex}
 \begin{document}
-\noindent{\small\sffamily\color{navy} DDA5001 / SYNTHETIC REGRESSION STUDY}\par
-\vspace{8mm}
-\noindent{\LARGE\bfseries Baseline and linear regression}\par
-\vspace{3mm}
-\noindent A concise comparison on two synthetic datasets.\par
-\vspace{10mm}
 \begin{center}
-\renewcommand{\arraystretch}{1.25}
-\setlength{\tabcolsep}{8pt}
-\begin{tabular}{llrrrr}
+{\Large\bfseries Baseline, Linear, and Flexible Models on a Synthetic Regression Task}\\[1.5mm]
+{\small A short tutorial report generated from \texttt{metrics.json}}\\[1mm]
+{\small DDA5001 \textperiodcentered\ 13 September 2026}
+\end{center}
+\vspace{1mm}
+
+\section*{Abstract}
+We compare a constant mean baseline, an ordinary least-squares line, and a
+degree-9 polynomial on a one-dimensional synthetic regression dataset. The
+polynomial attains the lowest training error but the highest held-out error,
+a compact illustration of overfitting. All figures are single-split results and
+not uncertainty estimates.
+
+\section*{Method}
+Data: $y = 2x + 1 + \epsilon$ with $x$ evenly spaced on $[-1,1]$, Gaussian noise
+$\sigma = 0.3$, seed 42, 40 points. We fix a 20/20 train/held-out split with a
+seed-42 permutation. Each model is fitted on the 20 training points only and
+scored by mean squared error (MSE) on the 20 held-out points.
+
+\section*{Results}
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{lrr}
 \toprule
-\multirow{2}{*}{Dataset} & \multirow{2}{*}{Model} &
-\multicolumn{2}{c}{Training} & \multicolumn{2}{c}{Held-out test} \\
-\cmidrule(lr){3-4}\cmidrule(lr){5-6}
- & & MSE & MAE & MSE & MAE \\
+Model & Training MSE & Held-out MSE \\
 \midrule
-\multirow{2}{*}{Low noise} & Mean & 1.4221 & 1.0051 & 1.5476 & 1.1372 \\
- & Linear & 0.0154 & 0.1012 & 0.0133 & 0.1011 \\
-\addlinespace[6pt]
-\multirow{2}{*}{Higher noise} & Mean & 1.6185 & 1.0422 & 1.8640 & 1.2140 \\
- & Linear & 0.1706 & 0.3373 & 0.1474 & 0.3371 \\
+Mean baseline & 1.2922 & 1.7700 \\
+Linear & 0.0289 & 0.1035 \\
+Degree-9 polynomial & 0.0223 & 0.1429 \\
 \bottomrule
 \end{tabular}
 \end{center}
-\vspace{4mm}
-\noindent\textbf{Table 1.} Single-split results on synthetic data
-($y=2x+1+\epsilon$). Gaussian noise standard deviations are 0.15 (low)
-and 0.50 (higher). Each dataset uses 30 training and 10 test observations,
-with seed 42. MSE is mean squared error; MAE is mean absolute error.
-Lower values indicate smaller prediction errors.\par
-\vspace{7mm}
-\noindent\textbf{Models.} Mean predicts the training-target mean. Linear fits
-a slope and intercept using training data only.\par
-\vspace{5mm}
-\noindent\textbf{Interpretation.} The fitted line has lower held-out errors
-than the constant baseline on both datasets. These small synthetic examples
-illustrate a reporting workflow; they do not establish general performance.\par
-\vspace{5mm}
-\noindent\textbf{Source.} Values copied from \texttt{results.csv} at four
-decimal places. No uncertainty estimates are implied.\par
+
+\section*{Discussion}
+The polynomial fits the training rows best (0.0223 versus 0.0289) yet generalizes
+worst (0.1429 versus 0.1035): extra flexibility bought a small training gain at the
+cost of held-out accuracy. Because the evaluation uses a single split, these
+numbers do not quantify uncertainty, and the held-out set should not be used for
+model selection. Values were copied from \texttt{metrics.json} at four decimal
+places and contain no new measurements.
+
 \end{document}

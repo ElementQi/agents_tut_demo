@@ -1,7 +1,15 @@
-# Prepared recovery artifact
+# Reference results page (author-written)
 
-This independently compiled page is an author-executed reference, not a recorded
-Codex CLI conversation. `scripts/build_results_page.py` mechanically preserves
-the CSV values and generates this editable source and one-page PDF. `review.md`
-records the published PDF skill workflow applied during authoring. The student
-starts from `demo/codex-results`, which contains no generated table or skill.
+Fallback for Demo B. `results.tex` and `results.pdf` are the author's version of
+the page the Codex prompts should produce from the reference experiment's
+`metrics.json` (mean baseline, linear, degree-9 polynomial; training and held-out
+MSE). They are a reproducible artifact, not a recording of a model session.
+
+Rebuild:
+
+```sh
+pdflatex -interaction=nonstopmode -halt-on-error -output-directory=demo/reference-results demo/reference-results/results.tex
+```
+
+Values match `demo/reference-experiment/metrics.json`: mean 1.2922 / 1.7700,
+linear 0.0289 / 0.1035, polynomial 0.0223 / 0.1429.

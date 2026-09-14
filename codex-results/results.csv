@@ -1,5 +1,0 @@
-dataset,model,train_mse,train_mae,test_mse,test_mae
-Low noise,Mean,1.4221,1.0051,1.5476,1.1372
-Low noise,Linear,0.0154,0.1012,0.0133,0.1011
-Higher noise,Mean,1.6185,1.0422,1.8640,1.2140
-Higher noise,Linear,0.1706,0.3373,0.1474,0.3371
