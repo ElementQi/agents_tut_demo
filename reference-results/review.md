@@ -1,4 +1,4 @@
-# Published PDF skill review, 13 September 2026
+# Published PDF skill review, 15 September 2026
 
 The author explicitly applied OpenAI's published `pdf` skill to the
 LaTeX-generated results PDF. This is a tool-executed authoring review, **not a
